@@ -13,6 +13,7 @@ services:
       - "5432:5432"
     networks:
       - backend-network
+    restart: always
 
   app:
     build:
@@ -32,6 +33,7 @@ services:
       - db
     networks:
       - backend-network
+    restart: always  # Política de reinicio
 
 networks:
   backend-network:
