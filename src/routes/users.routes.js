@@ -2,11 +2,13 @@ import { Router } from "express";
 import {
   getRecomendation,
   createTreatment,
+  getTreatment,
 } from "../controllers/index.controller.js";
 
 const router = Router();
 
-router.post("/api/storeTreatment",createTreatment);
+router.post("/api/treatment",createTreatment);
+router.get("/api/treatment/:id",getTreatment);
 router.get("/api/recomendation/:id",getRecomendation);
 
 
