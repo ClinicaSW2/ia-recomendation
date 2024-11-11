@@ -5,6 +5,7 @@ DROP TABLE IF EXISTS recomendation;
 -- Crear la tabla 'detalle historial'
 CREATE TABLE history_detail (
     history_id TEXT PRIMARY KEY,  -- Definir history_id como TEXT y clave primaria
+    pacient_id TEXT,
     title TEXT,
     notes TEXT
 );

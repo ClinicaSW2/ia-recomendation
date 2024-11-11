@@ -38,9 +38,16 @@ async function tratamiento(tituloDetalleHistoriaClinica, notas) {
     model: "gpt-3.5-turbo",
   });
 
-  // Divide la respuesta en tres partes: Título, Detalle, y Receta
   const response = completion.choices[0].message.content;
-  const [titulo, detalle, receta] = response.split("\n\n");
+
+  // Extraer cada sección usando expresiones regulares para mayor precisión
+  const tituloMatch = response.match(/Título del tratamiento:\s*([^\n]+)/);
+  const detalleMatch = response.match(/Detalle del tratamiento:\s*([\s\S]*?)(?=Receta recomendada:|$)/);
+  const recetaMatch = response.match(/Receta recomendada:\s*([\s\S]*)/);
+
+  const titulo = tituloMatch ? tituloMatch[1].trim() : null;
+  const detalle = detalleMatch ? detalleMatch[1].trim() : null;
+  const receta = recetaMatch ? recetaMatch[1].trim() : null;
 
   return { titulo, detalle, receta };
 }

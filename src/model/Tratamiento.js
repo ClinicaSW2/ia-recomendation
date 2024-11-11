@@ -17,13 +17,28 @@ export const store = async (Tratamiento) => {
 };
 
 export const storeStoryDetail = async (historyDetail) => {
-  const { id, title, notes } = historyDetail;
+  const { id, pacient_id, title, notes } = historyDetail;
   try {
     const { rows } = await pool.query(
-      "INSERT INTO history_detail (history_id, title, notes) VALUES ($1, $2, $3) RETURNING *;",
-      [id, title, notes]
+      "INSERT INTO history_detail (history_id, pacient_id,title, notes) VALUES ($1, $2, $3, $4) RETURNING *;",
+      [id, pacient_id, title, notes]
     );
     return rows[0];
+  } catch (error) {
+    throw new Error(error.message);
+  }
+};
+
+export const findTreatmentPacient = async (pacient_id) => {
+  try {
+    const { rows } = await pool.query(
+      `SELECT treatment.*
+       FROM treatment
+       JOIN history_detail ON treatment.history_id = history_detail.history_id
+       WHERE history_detail.pacient_id = $1;`,
+      [pacient_id]
+    );
+    return rows;
   } catch (error) {
     throw new Error(error.message);
   }
@@ -76,7 +91,8 @@ export const createRecomendation = async (tratamientoId, description) => {
 export default {
   store,
   storeStoryDetail,
+  findTreatmentPacient,
   createRecomendation,
   find,
-  getRecomendationsByTreatmentId
+  getRecomendationsByTreatmentId,
 };

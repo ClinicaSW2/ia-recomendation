@@ -45,6 +45,20 @@ export const getTreatment = async (req, res) => {
   }
 };
 
+export const getTreatmentByPacient = async (req, res) => {
+  const pacient_id = req.params.pacient_id;
+  try {
+    const treatment = await tratamientoModel.findTreatmentPacient(pacient_id);
+    if (!treatment) {
+      return res.json("El tratamiento no existe.");
+    }
+    return res.json(treatment);
+  } catch (error) {
+    console.error("Error obteniendo el tratamiento:", error);
+    return res.status(500).json("Error del servidor");
+  }
+}
+
 //Crear Tratamiento
 /* export const createTreatment = async (req,res) => {
     try {
@@ -58,10 +72,11 @@ export const getTreatment = async (req, res) => {
 
 export const createTreatment = async (req, res) => {
   try {
-    const { id, title, notes } = req.body;
+    const { id, pacient_id , title, notes } = req.body;
     const newTreatment = await tratamiento(title, notes);
     const storeStoryDetail = await tratamientoModel.storeStoryDetail({
       id,
+      pacient_id,
       title,
       notes,
     });

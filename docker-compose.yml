@@ -10,7 +10,7 @@ services:
       - pgdata:/var/lib/postgresql/data
       - ./database/db.sql:/docker-entrypoint-initdb.d/db.sql
     ports:
-      - "5432:5432"
+      - "5435:5432"  # Mapea el puerto externo 5435 al puerto interno 5432
     networks:
       - backend-network
     restart: always
@@ -24,7 +24,7 @@ services:
       DB_PASSWORD: ${DB_PASSWORD}
       DB_HOST: db
       DB_DATABASE: ${DB_DATABASE}
-      DB_PORT: ${DB_PORT}
+      DB_PORT: 5432  # La aplicación se conecta internamente a PostgreSQL en su puerto por defecto
       PORT: ${PORT}
       OPENAI_KEY: ${OPENAI_KEY}
     ports:
